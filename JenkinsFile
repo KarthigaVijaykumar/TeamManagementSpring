@@ -75,7 +75,7 @@ pipeline{
      stage("deploy to ec2"){
        steps{
             sshagent(['a70a80fb-a4ac-42c3-baf8-54ce6b9e1e53']){
-                    sh 'scp -r /var/jenkins_home/workspace/Springcichallenge/target/*.jar ubuntu@13.235.245.236:/home/ubuntu/artifact'
+                    sh 'scp -r /var/jenkins_home/workspace/Springcichallenge/target/*.jar ubuntu@13.235.245.236:/home/ubuntu/artifacts'
         }
        }
        }
