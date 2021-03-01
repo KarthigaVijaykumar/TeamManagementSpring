@@ -8,9 +8,7 @@ pipeline{
   stages {
     stage('Build'){
        steps {
-                sh'mvn clean package'
-                    
-                
+                sh'mvn clean package' 
             }
      }
     stage('Test'){
@@ -21,7 +19,7 @@ pipeline{
     stage("Build & SonarQube analysis") {
             agent any
             steps {
-              withSonarQubeEnv('SonarSpring') {
+              withSonarQubeEnv('sonar-server') {
                 sh 'java -version'
                 sh 'mvn clean package sonar:sonar'
               }
@@ -41,20 +39,19 @@ pipeline{
      stage('deploy to artifactory')
      {
      steps{
-     
      rtUpload (
     serverId: 'ARTIFACTORY_SERVER',
     spec: '''{
           "files": [
             {
               "pattern": "target/*.jar",
-              "target": "art-doc-dev-loc"
+              "target": "artifactory-docker-dev-local-springcichallenge"
             }
          ]
     }''',
  
-    buildName: 'holyFrog',
-    buildNumber: '42'
+    buildName: 'first spring build',
+    buildNumber: '1'
 )
      }}
      stage('download from artifactory')
@@ -66,7 +63,7 @@ pipeline{
                     spec: '''{
                     "files": [
                          {
-                             "pattern": "art-doc-dev-loc/",
+                             "pattern": "artifactory-docker-dev-local-springcichallenge/",
                              "target": ""
                         }
                      ]
@@ -90,9 +87,6 @@ pipeline{
       }
         }
         }
-       
-      
-  
   }
   }
 
